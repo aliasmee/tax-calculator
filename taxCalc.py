@@ -182,12 +182,12 @@ def newTotalTax(salary, socialSec=0, special=0, time=1):
 
 
 def main():
-    _salary = int(input("请输入你的税前工资： "))
-    _socialSec = float(input("请输入你的三险一金（如不填的话，将按照工资正常扣除）： ") or "0")
-    _special = int(input("请输入你的专项扣税总额（如租房、贷款、学历教育、子女教育、老人等,Default：0)：") or "0")
-    _phase = int(input("请输入你要计算的周期(Tips: 新税采用累加政策，每月税款可能不一样): ") or "1")
-    _choice = int(input("是否计算每年能省下来都少钱？(0 or 1, Default: 0): ") or "0")
     try:
+        _salary = int(input("请输入你的税前工资： "))
+        _socialSec = float(input("请输入你的三险一金（如不填的话，将按照工资正常扣除）： ") or "0")
+        _special = int(input("请输入你的专项扣税总额（如租房、贷款、学历教育、子女教育、老人等,Default：0)：") or "0")
+        _phase = int(input("请输入你要计算的周期(Tips: 新税采用累加政策，每月税款可能不一样): ") or "1")
+        _choice = int(input("是否计算每年能省下来都少钱？(0/Y or 1/N, Default: N): ") or "1")
         if _socialSec > _salary or _special > _salary:
             print("三险一金、专项扣除金额不能大于你的工资！请重新运行程序！")
         elif _salary > 0 and _socialSec >= 0 and _special >= 0:
@@ -197,7 +197,11 @@ def main():
     except TypeError:
         print("Error Messages: 三险一金、专项扣除金额不能大于你的工资！请重新运行程序！")
         raise
-    if _choice == 0:
+    except ValueError:
+        print("Error Messages: 请输入正确的数字!")
+        raise
+
+    if _choice == 0 or _choice == 'Y' :
         print("今年一共需缴纳税额{0:.1f}人民币，相比税改之前可以节省{1:.1f}人民币！".format(newTotalTax(_salary,_socialSec,_special,12),oldTotalTax(_salary,_socialSec)-newTotalTax(_salary,_socialSec,_special,12)))
 
         # oldTax = CalcTax(salary=_salary, socialSec=_socialSec, isNewTax=False).oldCalcTax()
